@@ -8,7 +8,7 @@ public class NeedRepositoryImpl implements NeedRepositoryCustom {
 
     @Override
     public List<Need> findHospitalNeeds(Integer hospitalId) {
-        // TODO Auto-generated method stub
+
         return null;
     }
 

@@ -1,4 +1,6 @@
 package com.hackathonNerds.entity;
+
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -8,121 +10,125 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "Hospital")
-public class Hospital {
-	
-		@Id
-	    @Column(name = "id")
-	    private Integer id = null;
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler" })
+public class Hospital implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-	    @NotNull
-	    @Column(name = "name")
-	    private String name;
+    @Id
+    @Column(name = "id")
+    private Integer id = null;
 
-	    @NotNull
-	    @Column(name = "adress")
-	    private String adress;
-	    
-	    @NotNull
-	    @Column(name = "gpscoord")
-	    private String coord;
-	    
-	    @NotNull
-	    @Column(name = "totalbeds")
-	    private Integer totalBeds;
-	    
-	    @NotNull
-	    @Column(name = "reservedbeds")
-	    private Integer reservedbeds;
-	    
-	    @NotNull
-	    @Column(name = "occupiedbeds")
-	    private Integer occupiedbeds;
-	    
-	    @OneToMany(mappedBy = "id")
-	    private List<Need> needlist;
-	    
-	    @OneToMany(mappedBy = "id")
-	    private List<Have> haveList;
-	    
-	    @OneToMany(mappedBy = "id")
-	    private List<Booking> bookinglist;
-	    
-	    public Hospital() {
+    @NotNull
+    @Column(name = "name")
+    private String name;
 
-	    }
+    @NotNull
+    @Column(name = "address")
+    private String address;
 
-	    public Hospital(Integer id, @NotNull String name, @NotNull String adress, @NotNull String coord,
-				@NotNull Integer totalBeds, @NotNull Integer reservedbeds, @NotNull Integer occupiedbeds,
-				List<Need> needList, List<Have> haveList, List<Booking> bookingList) {
-			super();
-			this.id = id;
-			this.name = name;
-			this.adress = adress;
-			this.coord = coord;
-			this.totalBeds = totalBeds;
-			this.reservedbeds = reservedbeds;
-			this.occupiedbeds = occupiedbeds;
-			this.needlist = needList;
-			this.haveList = haveList;
-			this.bookinglist = bookingList;
-		}
+    @NotNull
+    @Column(name = "gpscoord")
+    private String coord;
 
-		public Integer getId() {
-	        return id;
-	    }
+    @NotNull
+    @Column(name = "totalbeds")
+    private Integer totalBeds;
 
-	    public void setId(Integer id) {
-	        this.id = id;
-	    }
+    @NotNull
+    @Column(name = "reservedbeds")
+    private Integer reservedbeds;
 
-	    public String getName() {
-	        return name;
-	    }
+    @NotNull
+    @Column(name = "occupiedbeds")
+    private Integer occupiedbeds;
 
-	    public void setName(String name) {
-	        this.name = name;
-	    }
+    @OneToMany(mappedBy = "id")
+    private List<Need> needlist;
 
-		public String getAdress() {
-			return adress;
-		}
+    @OneToMany(mappedBy = "id")
+    private List<Have> haveList;
 
-		public void setAdress(String adress) {
-			this.adress = adress;
-		}
+    @OneToMany(mappedBy = "id")
+    private List<Booking> bookinglist;
 
-		public String getCoord() {
-			return coord;
-		}
+    public Hospital() {
 
-		public void setCoord(String coord) {
-			this.coord = coord;
-		}
+    }
 
-		public Integer getTotalBeds() {
-			return totalBeds;
-		}
+    public Hospital(Integer id, @NotNull String name, @NotNull String adress, @NotNull String coord,
+            @NotNull Integer totalBeds, @NotNull Integer reservedbeds, @NotNull Integer occupiedbeds,
+            List<Need> needList, List<Have> haveList, List<Booking> bookingList) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.address = adress;
+        this.coord = coord;
+        this.totalBeds = totalBeds;
+        this.reservedbeds = reservedbeds;
+        this.occupiedbeds = occupiedbeds;
+        this.needlist = needList;
+        this.haveList = haveList;
+        this.bookinglist = bookingList;
+    }
 
-		public void setTotalBeds(Integer totalBeds) {
-			this.totalBeds = totalBeds;
-		}
+    public Integer getId() {
+        return id;
+    }
 
-		public Integer getRezervedBeds() {
-			return reservedbeds;
-		}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-		public void setRezervedBeds(Integer rezervedBeds) {
-			this.reservedbeds = rezervedBeds;
-		}
+    public String getName() {
+        return name;
+    }
 
-		public Integer getOccupiedBeds() {
-			return occupiedbeds;
-		}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-		public void setOccupiedBeds(Integer occupiedBeds) {
-			this.occupiedbeds = occupiedBeds;
-		}
-	    
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String adress) {
+        this.address = adress;
+    }
+
+    public String getCoord() {
+        return coord;
+    }
+
+    public void setCoord(String coord) {
+        this.coord = coord;
+    }
+
+    public Integer getTotalBeds() {
+        return totalBeds;
+    }
+
+    public void setTotalBeds(Integer totalBeds) {
+        this.totalBeds = totalBeds;
+    }
+
+    public Integer getReservedBeds() {
+        return reservedbeds;
+    }
+
+    public void setReservedBeds(Integer rezervedBeds) {
+        this.reservedbeds = rezervedBeds;
+    }
+
+    public Integer getOccupiedBeds() {
+        return occupiedbeds;
+    }
+
+    public void setOccupiedBeds(Integer occupiedBeds) {
+        this.occupiedbeds = occupiedBeds;
+    }
+
 }

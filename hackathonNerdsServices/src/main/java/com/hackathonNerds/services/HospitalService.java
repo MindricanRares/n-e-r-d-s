@@ -1,6 +1,5 @@
 package com.hackathonNerds.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,8 +23,9 @@ public class HospitalService {
 
     public List<HospitalResponse> retrieveHospitals() {
         List<Hospital> hospitals = hospitalRepository.findAll();
-        List<HospitalResponse> hospRps = hospitals.stream()
-                .map(hosp -> new HospitalResponse(hosp.getId(), hosp.getName())).collect(Collectors.toList());
+        List<HospitalResponse> hospRps =
+                hospitals.stream().map(hosp -> new HospitalResponse(hosp.getId(), hosp.getName(), hosp.getCoord()))
+                        .collect(Collectors.toList());
         return hospRps;
     }
 
@@ -33,11 +33,13 @@ public class HospitalService {
         return hospitalRepository.getOne(hospitalId);
     }
 
-    public List<HospitalResourcesResponse> retrieveHospitalNeeds(Integer hospitalId) {
+    public HospitalResourcesResponse retrieveHospitalNeeds(Integer hospitalId) {
         List<Need> needsList = needRepository.findHospitalNeeds(hospitalId);
         Hospital hospitals = hospitalRepository.getOne(hospitalId);
 
-        List<HospitalResourcesResponse> response = new ArrayList<>();
+        HospitalResourcesResponse response = new HospitalResourcesResponse();
+        response.setNeeds(needsList);
+        response.setHospital(hospitals);
 
         return response;
     }

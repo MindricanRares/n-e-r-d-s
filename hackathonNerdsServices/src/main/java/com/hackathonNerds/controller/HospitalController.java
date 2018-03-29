@@ -34,6 +34,12 @@ public class HospitalController extends BaseController {
         return hospitalService.retrieveHospitalById(clientId);
     }
 
+    @RequestMapping(value = "/hospital/{clientId}/resources", method = RequestMethod.GET)
+    @ResponseBody
+    public HospitalResourcesResponse retrieveHospitalResources(@PathVariable("clientId") Integer clientId) {
+        return hospitalService.retrieveHospitalNeeds(clientId);
+    }
+
     @RequestMapping(value = "/hospital/updateHsp", method = RequestMethod.PUT)
     public void updateHospitalResources(@RequestBody final HospitalResourcesResponse request) {
 
