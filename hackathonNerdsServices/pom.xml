@@ -24,8 +24,7 @@
       </plugin>
     </plugins>
     <finalName>hackathonNerdsServices</finalName>
-  </build>
-  
+  </build>  
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -43,9 +42,17 @@
 		<scope>provided</scope>
 	</dependency>
 	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+	<dependency>
     	<groupId>org.springframework.boot</groupId>
     	<artifactId>spring-boot</artifactId>    	
 	</dependency>
+	<dependency>
+  		<groupId>org.postgresql</groupId>
+  		<artifactId>postgresql</artifactId>
+  		</dependency>
     </dependencies>
     <properties>
         <start-class>com.hackathonNerds.Application</start-class>
