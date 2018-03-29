@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hackathonNerds.common.HospitalResourcesResponse;
 import com.hackathonNerds.common.HospitalResponse;
+import com.hackathonNerds.common.ReservationData;
 import com.hackathonNerds.entity.Hospital;
 import com.hackathonNerds.services.HospitalService;
 
@@ -41,7 +42,12 @@ public class HospitalController extends BaseController {
     }
 
     @RequestMapping(value = "/hospital/updateHsp", method = RequestMethod.PUT)
-    public void updateHospitalResources(@RequestBody final HospitalResourcesResponse request) {
+    public void updateHospitalResources(@RequestBody final Hospital request) {
+        hospitalService.updateHospital(request);
+    }
 
+    @RequestMapping(value = "/hospital/reserve", method = RequestMethod.POST)
+    public void reserveHospitalBed(@RequestBody final ReservationData request) {
+        hospitalService.reserveHospitalBeds(request);
     }
 }
