@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hackathonNerds.entity.User;
 import com.hackathonNerds.service.HelloService;
 
 @RestController
@@ -16,7 +17,11 @@ public class TestController extends BaseController {
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String test() {
-        hs.setName("abc");
+        User u = new User();
+        u.setName("testUser");
+        u.setId(1);
+        hs.addUser(u);
+        hs.setName(hs.getUser(1).getName());
         return hs.printHello();
 
     }
