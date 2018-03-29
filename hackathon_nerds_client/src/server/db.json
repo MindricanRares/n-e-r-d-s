@@ -1,31 +1,27 @@
 {
-    "hospitals": [
-      {
-        "id":1,
-        "name": "Spitalul Clinic Județean de Urgenta",
-        "address": "Calea Bucuresti 25",
-        "gps_coordonates": "45.6485988,25.6200351",
-        "nr_beds": 1,
-        "nr_of_pending_beds":22,
-        "total_number_of_beds":200
-      },
-      {
-        "id":2,
-        "name": "Spitalul Astra",
-        "address": "Calea Bucuresti 2",
-        "gps_coordonates":"45.6489884,25.6184661",
-        "nr_beds": 1,
-        "nr_of_pending_beds":22,
-        "total_number_of_beds":150
-      },
-      {
-        "id":3,
-        "name": "Spitalul sfantul constantin",
-        "address": "Strada Iuliu Maniu 49", 
-        "gps_coordonates": "45.6533996,25.5957472",
-        "nr_beds": 25,
-        "pending_number_of_beds":23,
-        "total_number_of_beds":26
-      }
-    ]
+  "hospitals": [
+    {
+      "name": "Spitalul Clinic Județean de Urgenta",
+      "address": "Calea Bucuresti 25",
+      "gps_coordonates": "45.6485988,25.6200351",
+      "nr_beds": 3,
+      "nr_of_pending_beds": 22,
+      "id": 1
+    },
+    {
+      "name": "Spitalul Astra",
+      "address": "Calea Bucuresti 2",
+      "gps_coordonates": "45.6489884,25.6184661",
+      "nr_beds": 2,
+      "nr_of_pending_beds": 22,
+      "id": 2
+    },
+    {
+      "name": "Spitalul sfantul constantin",
+      "address": "Strada Iuliu Maniu 49",
+      "gps_coordonates": "45.6533996,25.5957472",
+      "nr_beds": 29,
+      "id": 3
+    }
+  ]
 }
