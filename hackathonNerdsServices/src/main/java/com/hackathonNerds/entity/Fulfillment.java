@@ -18,29 +18,29 @@ public class Fulfillment {
     private Integer id = null;
 
 	@NotNull
-    @Column(name = "nrBeds")
-    private Integer nrBeds;
+    @Column(name = "quantity")
+    private Integer quantity;
 	
 	@NotNull
 	@Column(name = "fulfilled")
 	private boolean fulfilled;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "needId")
+    @JoinColumn(name = "needid")
     private Need need;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "personId")
+    @JoinColumn(name = "personid")
     private Person person;
 
     public Fulfillment() {
     	
     }
 
-	public Fulfillment(Integer id, @NotNull Integer nrBeds, @NotNull boolean fulfilled, Need need, Person person) {
+	public Fulfillment(Integer id, @NotNull Integer quantity, @NotNull boolean fulfilled, Need need, Person person) {
 		super();
 		this.id = id;
-		this.nrBeds = nrBeds;
+		this.quantity = quantity;
 		this.fulfilled = fulfilled;
 		this.need = need;
 		this.person = person;
@@ -54,12 +54,12 @@ public class Fulfillment {
 		this.id = id;
 	}
 
-	public Integer getNrBeds() {
-		return nrBeds;
+	public Integer getQuantity() {
+		return quantity;
 	}
 
-	public void setNrBeds(Integer nrBeds) {
-		this.nrBeds = nrBeds;
+	public void setNrBeds(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 	public boolean isFulfilled() {

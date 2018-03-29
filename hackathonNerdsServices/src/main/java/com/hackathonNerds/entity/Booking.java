@@ -18,15 +18,15 @@ public class Booking {
     private Integer id = null;
 
 	@NotNull
-    @Column(name = "nrBeds")
+    @Column(name = "nrbeds")
     private Integer nrBeds;
     
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hospitalId")
+    @JoinColumn(name = "hospitalid")
     private Hospital hospital;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "personId")
+    @JoinColumn(name = "personid")
     private Person person;
 
     public Booking() {

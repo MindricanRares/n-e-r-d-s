@@ -36,7 +36,7 @@ public class Resource {
 	    
 	    @NotNull
 	    @Column(name = "um")
-	    private MeasurmentUnits measurmentUnits;
+	    private MeasurmentUnits measurmentunits;
 
 	    @OneToMany(mappedBy = "id")
 	    private List<Need> needList;
@@ -53,7 +53,7 @@ public class Resource {
 			super();
 			this.id = id;
 			this.name = name;
-			this.measurmentUnits = measurmentUnits;
+			this.measurmentunits = measurmentUnits;
 			this.needList = needList;
 			this.haveList = haveList;
 		}
@@ -77,11 +77,11 @@ public class Resource {
 	    }
 
 	    public MeasurmentUnits getMeasurmentUnits() {
-			return measurmentUnits;
+			return measurmentunits;
 		}
 
 		public void setMeasurmentUnits(MeasurmentUnits measurmentUnits) {
-			this.measurmentUnits = measurmentUnits;
+			this.measurmentunits = measurmentUnits;
 		}
 
 		

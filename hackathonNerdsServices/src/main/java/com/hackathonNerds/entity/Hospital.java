@@ -25,36 +25,36 @@ public class Hospital {
 	    private String adress;
 	    
 	    @NotNull
-	    @Column(name = "gpsCoord")
+	    @Column(name = "gpscoord")
 	    private String coord;
 	    
 	    @NotNull
-	    @Column(name = "totalBeds")
+	    @Column(name = "totalbeds")
 	    private Integer totalBeds;
 	    
 	    @NotNull
-	    @Column(name = "rezervedBeds")
-	    private Integer rezervedBeds;
+	    @Column(name = "reservedbeds")
+	    private Integer reservedbeds;
 	    
 	    @NotNull
-	    @Column(name = "occupiedBeds")
-	    private Integer occupiedBeds;
+	    @Column(name = "occupiedbeds")
+	    private Integer occupiedbeds;
 	    
 	    @OneToMany(mappedBy = "id")
-	    private List<Need> needList;
+	    private List<Need> needlist;
 	    
 	    @OneToMany(mappedBy = "id")
 	    private List<Have> haveList;
 	    
 	    @OneToMany(mappedBy = "id")
-	    private List<Booking> bookingList;
+	    private List<Booking> bookinglist;
 	    
 	    public Hospital() {
 
 	    }
 
 	    public Hospital(Integer id, @NotNull String name, @NotNull String adress, @NotNull String coord,
-				@NotNull Integer totalBeds, @NotNull Integer rezervedBeds, @NotNull Integer occupiedBeds,
+				@NotNull Integer totalBeds, @NotNull Integer reservedbeds, @NotNull Integer occupiedbeds,
 				List<Need> needList, List<Have> haveList, List<Booking> bookingList) {
 			super();
 			this.id = id;
@@ -62,11 +62,11 @@ public class Hospital {
 			this.adress = adress;
 			this.coord = coord;
 			this.totalBeds = totalBeds;
-			this.rezervedBeds = rezervedBeds;
-			this.occupiedBeds = occupiedBeds;
-			this.needList = needList;
+			this.reservedbeds = reservedbeds;
+			this.occupiedbeds = occupiedbeds;
+			this.needlist = needList;
 			this.haveList = haveList;
-			this.bookingList = bookingList;
+			this.bookinglist = bookingList;
 		}
 
 		public Integer getId() {
@@ -110,19 +110,19 @@ public class Hospital {
 		}
 
 		public Integer getRezervedBeds() {
-			return rezervedBeds;
+			return reservedbeds;
 		}
 
 		public void setRezervedBeds(Integer rezervedBeds) {
-			this.rezervedBeds = rezervedBeds;
+			this.reservedbeds = rezervedBeds;
 		}
 
 		public Integer getOccupiedBeds() {
-			return occupiedBeds;
+			return occupiedbeds;
 		}
 
 		public void setOccupiedBeds(Integer occupiedBeds) {
-			this.occupiedBeds = occupiedBeds;
+			this.occupiedbeds = occupiedBeds;
 		}
 	    
 }

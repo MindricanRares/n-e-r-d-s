@@ -23,11 +23,11 @@ public class Have {
     private Integer quatity;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hospitalId")
+    @JoinColumn(name = "hospitalid")
     private Hospital hospital;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "resourseId")
+    @JoinColumn(name = "resourseid")
     private Resource resource;
 	
 	public Have() {
