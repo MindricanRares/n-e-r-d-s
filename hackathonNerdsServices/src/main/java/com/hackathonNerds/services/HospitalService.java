@@ -1,5 +1,6 @@
 package com.hackathonNerds.services;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +24,7 @@ import com.hackathonNerds.repository.PersonRepository;
 
 @Service
 public class HospitalService {
-    private static final String ANONIM = "anonim";
+    private static final String ANONIM = "anonymous";
 
     @Autowired
     private HospitalRepository hospitalRepository;
@@ -79,11 +80,15 @@ public class HospitalService {
         return response;
     }
 
-    public void updateHospital(Hospital hospital) {
+    public void updateHospital(Integer hospitalId, Integer reservedBeds, Integer totalBeds, Integer occupiedBeds) {
+        Hospital hospital = hospitalRepository.getOne(hospitalId);
+        hospital.setReservedBeds(reservedBeds != null ? reservedBeds : hospital.getReservedBeds());
+        hospital.setTotalBeds(totalBeds != null ? totalBeds : hospital.getTotalBeds());
+        hospital.setOccupiedBeds(occupiedBeds != null ? occupiedBeds : hospital.getOccupiedBeds());
         hospitalRepository.save(hospital);
     }
 
-    public void reserveHospitalBeds(ReservationData request) {
+    public void reserveHospitalBeds(ReservationData request) throws SQLException {
         Person p = null;
         if (request.getName() == null || ANONIM.equals(request.getName())) {
             p = personRepository.findPersonByName(ANONIM).get(0);
@@ -97,6 +102,10 @@ public class HospitalService {
         b.setHospital(hospital);
         b.setNrBeds(request.getBedNumber());
         b.setPerson(p);
-        bookingRepository.save(b);
+        try {
+            bookingRepository.save(b);
+        } catch (Exception ex) {
+            throw new SQLException("Requested number of beds not available at the moment");
+        }
     }
 }

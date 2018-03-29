@@ -9,6 +9,13 @@ public class ReservationData implements Serializable {
     private Integer bedNumber;
     private String name = "anonim";
 
+    public ReservationData(Integer hospitalId, Integer bedNumber, String name) {
+        super();
+        this.hospitalId = hospitalId;
+        this.bedNumber = bedNumber;
+        this.name = name;
+    }
+
     public Integer getHospitalId() {
         return hospitalId;
     }
