@@ -9,77 +9,50 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-
 @Entity
 @Table(name = "Need")
 public class Need {
-	
-	@Id
+
+    @Id
     @Column(name = "id")
     private Integer id = null;
 
-	@NotNull
+    @NotNull
     @Column(name = "quantity")
     private Integer quatity;
-	
-	@NotNull
-    @Column(name = "hospitalId")
-    private Integer hospitalId;
-    
-	@NotNull
-    @Column(name = "resourcelId")
-    private Integer resourcelId;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id")
-	private Hospital hospital;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id")
-	private Resource resource;
-	
-	public Need() {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hospitalId")
+    private Hospital hospital;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "resourseId")
+    private Resource resource;
+
+    public Need() {
 
     }
 
-	public Need(Integer id, @NotNull Integer quatity, @NotNull Integer hospitalId, @NotNull Integer resourcelId) {
-		super();
-		this.id = id;
-		this.quatity = quatity;
-		this.hospitalId = hospitalId;
-		this.resourcelId = resourcelId;
-	}
+    public Need(Integer id, @NotNull Integer quatity, @NotNull Integer hospitalId, @NotNull Integer resourcelId) {
+        super();
+        this.id = id;
+        this.quatity = quatity;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Integer getQuatity() {
-		return quatity;
-	}
+    public Integer getQuatity() {
+        return quatity;
+    }
 
-	public void setQuatity(Integer quatity) {
-		this.quatity = quatity;
-	}
+    public void setQuatity(Integer quatity) {
+        this.quatity = quatity;
+    }
 
-	public Integer getHospitalId() {
-		return hospitalId;
-	}
-
-	public void setHospitalId(Integer hospitalId) {
-		this.hospitalId = hospitalId;
-	}
-
-	public Integer getResourcelId() {
-		return resourcelId;
-	}
-
-	public void setResourcelId(Integer resourcelId) {
-		this.resourcelId = resourcelId;
-	}
-	
 }
