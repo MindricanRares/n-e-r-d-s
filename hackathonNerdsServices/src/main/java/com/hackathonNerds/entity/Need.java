@@ -1,11 +1,14 @@
 package com.hackathonNerds.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -28,18 +31,25 @@ public class Need {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resourseId")
     private Resource resource;
+    
+    @OneToMany(mappedBy = "id")
+    private List<Fulfillment> fulfillmentList;
 
     public Need() {
 
     }
 
-    public Need(Integer id, @NotNull Integer quatity, @NotNull Integer hospitalId, @NotNull Integer resourcelId) {
-        super();
-        this.id = id;
-        this.quatity = quatity;
-    }
+	public Need(Integer id, @NotNull Integer quatity, Hospital hospital, Resource resource,
+			List<Fulfillment> fulfillmentList) {
+		super();
+		this.id = id;
+		this.quatity = quatity;
+		this.hospital = hospital;
+		this.resource = resource;
+		this.fulfillmentList = fulfillmentList;
+	}
 
-    public Integer getId() {
+	public Integer getId() {
         return id;
     }
 
@@ -55,4 +65,19 @@ public class Need {
         this.quatity = quatity;
     }
 
+	public Hospital getHospital() {
+		return hospital;
+	}
+
+	public void setHospital(Hospital hospital) {
+		this.hospital = hospital;
+	}
+
+	public Resource getResource() {
+		return resource;
+	}
+
+	public void setResource(Resource resource) {
+		this.resource = resource;
+	}
 }

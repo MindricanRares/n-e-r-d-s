@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 
 
 @Entity
-@Table(name = "Need")
+@Table(name = "Have")
 public class Have {
 	
 	@Id
@@ -22,32 +22,22 @@ public class Have {
     @Column(name = "quantity")
     private Integer quatity;
 	
-	@NotNull
-    @Column(name = "hospitalId")
-    private Integer hospitalId;
-    
-	@NotNull
-    @Column(name = "resourcelId")
-    private Integer resourcelId;
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hospitalId")
+    private Hospital hospital;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id")
-	private Hospital hospital;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id")
-	private Resource resource;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "resourseId")
+    private Resource resource;
 	
 	public Have() {
 
     }
 
-	public Have(Integer id, @NotNull Integer quatity, @NotNull Integer hospitalId, @NotNull Integer resourcelId) {
+	public Have(Integer id, @NotNull Integer quatity) {
 		super();
 		this.id = id;
 		this.quatity = quatity;
-		this.hospitalId = hospitalId;
-		this.resourcelId = resourcelId;
 	}
 
 	public Integer getId() {
@@ -65,21 +55,4 @@ public class Have {
 	public void setQuatity(Integer quatity) {
 		this.quatity = quatity;
 	}
-
-	public Integer getHospitalId() {
-		return hospitalId;
-	}
-
-	public void setHospitalId(Integer hospitalId) {
-		this.hospitalId = hospitalId;
-	}
-
-	public Integer getResourcelId() {
-		return resourcelId;
-	}
-
-	public void setResourcelId(Integer resourcelId) {
-		this.resourcelId = resourcelId;
-	}
-	
 }

@@ -27,7 +27,7 @@ import com.hackathonNerds.common.MeasurmentUnits;
 public class Resource {
 	
 	 	@Id
-	    @Column(name = "resourseId")
+	    @Column(name = "id")
 	    private Integer id = null;
 
 	    @NotNull
@@ -41,17 +41,26 @@ public class Resource {
 	    @OneToMany(mappedBy = "id")
 	    private List<Need> needList;
 	    
+	    @OneToMany(mappedBy = "id")
+	    private List<Have> haveList;
+	    
 		public Resource() {
 
 	    }
 
-	    public Resource(Integer id, String name, MeasurmentUnits measurementUnits) {
-	        this.id = id;
-	        this.name = name;
-	        this.measurmentUnits = measurementUnits;
-	    }
+	    public Resource(Integer id, @NotNull String name, @NotNull MeasurmentUnits measurmentUnits, List<Need> needList,
+				List<Have> haveList) {
+			super();
+			this.id = id;
+			this.name = name;
+			this.measurmentUnits = measurmentUnits;
+			this.needList = needList;
+			this.haveList = haveList;
+		}
 
-	    public Integer getId() {
+
+
+		public Integer getId() {
 	        return id;
 	    }
 
@@ -73,5 +82,25 @@ public class Resource {
 
 		public void setMeasurmentUnits(MeasurmentUnits measurmentUnits) {
 			this.measurmentUnits = measurmentUnits;
+		}
+
+		
+		public List<Need> getNeedList() {
+			return needList;
+		}
+		
+
+		public void setNeedList(List<Need> needList) {
+			this.needList = needList;
+		}
+
+		
+		public List<Have> getHaveList() {
+			return haveList;
+		}
+
+		
+		public void setHaveList(List<Have> haveList) {
+			this.haveList = haveList;
 		}
 }

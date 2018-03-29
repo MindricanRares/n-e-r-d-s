@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 public class Hospital {
 	
 		@Id
-	    @Column(name = "hospitalId")
+	    @Column(name = "id")
 	    private Integer id = null;
 
 	    @NotNull
@@ -43,16 +43,33 @@ public class Hospital {
 	    @OneToMany(mappedBy = "id")
 	    private List<Need> needList;
 	    
+	    @OneToMany(mappedBy = "id")
+	    private List<Have> haveList;
+	    
+	    @OneToMany(mappedBy = "id")
+	    private List<Booking> bookingList;
+	    
 	    public Hospital() {
 
 	    }
 
-	    public Hospital(Integer id, String name) {
-	        this.id = id;
-	        this.name = name;
-	    }
+	    public Hospital(Integer id, @NotNull String name, @NotNull String adress, @NotNull String coord,
+				@NotNull Integer totalBeds, @NotNull Integer rezervedBeds, @NotNull Integer occupiedBeds,
+				List<Need> needList, List<Have> haveList, List<Booking> bookingList) {
+			super();
+			this.id = id;
+			this.name = name;
+			this.adress = adress;
+			this.coord = coord;
+			this.totalBeds = totalBeds;
+			this.rezervedBeds = rezervedBeds;
+			this.occupiedBeds = occupiedBeds;
+			this.needList = needList;
+			this.haveList = haveList;
+			this.bookingList = bookingList;
+		}
 
-	    public Integer getId() {
+		public Integer getId() {
 	        return id;
 	    }
 
