@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -129,6 +130,24 @@ public class Hospital implements Serializable {
 
     public void setOccupiedBeds(Integer occupiedBeds) {
         this.occupiedbeds = occupiedBeds;
+    }
+
+    @JsonIgnore
+    public List<Need> getNeedlist() {
+        return needlist;
+    }
+
+    public void setNeedlist(List<Need> needlist) {
+        this.needlist = needlist;
+    }
+
+    @JsonIgnore
+    public List<Have> getHaveList() {
+        return haveList;
+    }
+
+    public void setHaveList(List<Have> haveList) {
+        this.haveList = haveList;
     }
 
 }
