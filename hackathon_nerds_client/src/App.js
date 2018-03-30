@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import MapWithADirectionsRenderer from "./map-component";
 import MapWithAMarkerWithLabel from "./map-component-with-labels";
+
 
 class App extends Component {
   render() {
@@ -69,8 +69,8 @@ class Home extends Component {
                 of casualties
               </p>
               <p>
-                <a className="btn btn-primary btn-lg" href="#" role="button">
-                  Register yout hospital
+                <a className="btn btn-primary btn-lg"  role="button">
+                  Register your hospital
                 </a>
               </p>
             </div>
@@ -81,12 +81,12 @@ class Home extends Component {
               <div className="col-md-4">
                 <h2>Completely free</h2>
                 <p>
-                  The whole will be open source and everybody can contribuite
+                  The whole project will be open source and everybody can contribuite.
                 </p>
                 <br />
                 <br />
                 <p>
-                  <a className="btn btn-secondary" href="#" role="button">
+                  <a className="btn btn-secondary" role="button">
                     Find us on GitHub
                   </a>
                 </p>
@@ -100,7 +100,7 @@ class Home extends Component {
                 <br />
                 <br />
                 <p>
-                  <a className="btn btn-secondary" href="#" role="button">
+                  <a className="btn btn-secondary" role="button">
                     Contact Us
                   </a>
                 </p>
@@ -108,13 +108,13 @@ class Home extends Component {
               <div className="col-md-4">
                 <h2>Advocates of the future</h2>
                 <p>
-                  Becouse our solution is targeted at low income countries we
-                  belive that internet acces should be present everywhere in the
-                  world, thus we want to encourege everyone to help us achive
-                  this
+                  Because our solution is targeted at low income countries we
+                  believe that internet access should be present everywhere in the
+                  world. Thus we want to encourege everyone to help us achive
+                  this.
                 </p>
                 <p>
-                  <a className="btn btn-secondary" href="#" role="button">
+                  <a className="btn btn-secondary" role="button">
                     Donate
                   </a>
                 </p>
@@ -154,7 +154,7 @@ class Hospitals extends Component {
     return this.state.items.map(hospital => {
       let hospitalLink = "/hospitals/" + hospital.id;
       return (
-        <Link className="list-group-item" to={hospitalLink}>
+        <Link key={hospital.id} className="list-group-item" to={hospitalLink}>
           {hospital.name}
         </Link>
       );
@@ -163,7 +163,7 @@ class Hospitals extends Component {
   createRoutesForHospitals = () => {
     return this.state.items.map(hospital => {
       let hospitalLink = "/hospitals/" + hospital.id;
-      return <Route path={hospitalLink} component={Hospital} />;
+      return <Route key={hospital.id} path={hospitalLink} component={Hospital} />;
     });
   };
 
@@ -174,6 +174,7 @@ class Hospitals extends Component {
           {this.displayListOfHospitals()}
           {this.createRoutesForHospitals()}
         </ul>
+
       </Router>
     );
   }
@@ -188,7 +189,7 @@ class Person extends Component {
       numberOfPersons: 1,
       userSubmited: false,
       best_hospital_location: "45.6485988,25.6200351",
-      best_hospital_id: 1
+      best_hospital_id: 3
     };
     this.userFound = false;
   }
@@ -226,7 +227,7 @@ class Person extends Component {
       } else {
         alert("Geolocation is not supported by this browser.");
       }
-    }, 5000);
+    }, 1500);
     this.getHostpitals();
   }
   getHostpitals = () => {
@@ -321,10 +322,12 @@ class Person extends Component {
       best_hospital_location: sortedResult[0].hospital_location,
       best_hospital_id: sortedResult[0].hospitalId
     });
+    // return sortedResult[0].hosp
   };
 
   sendPersonToBestHospital = () => {
-    let bestHospital = this.chooseBestHospital();
+    debugger;
+    this.chooseBestHospital();
     // console.log(bestHospital);
 
     let hospitalUrl = `http://localhost:9000/hackathonNerdsServices/hospitals/hospital/${
@@ -339,20 +342,20 @@ class Person extends Component {
       <div>
         <div className="personMap">{this.drawMap()}</div>
 
-        <div class="form-group">
-          <label for="exampleInputEmail1">Number of persons</label>
+        <div className="form-group">
+          <label >Number of persons</label>
           <input
             type="text"
             onChange={this.handleChange}
-            class="form-control"
+            className="form-control"
             placeholder="1"
           />
-          <small class="form-text text-muted">
+          <small className="form-text text-muted">
             We need to know the number of beds required.
           </small>
           <br />
-          <button onClick={this.handleClick} class="btn btn-primary">
-            Send me tot the best Hospital
+          <button onClick={this.handleClick} className="btn btn-primary">
+            Send me to the best Hospital
           </button>
         </div>
       </div>
@@ -429,15 +432,15 @@ class Hospital extends Component {
     } else {
       needs = this.state.hospital.needs.map(need => {
         return (
-          <div class="form-group">
+          <div className="form-group">
             <p>
               {need.resource.name}: {need.quatity} 
               {need.resource.measurmentUnits}
             </p>
 
-            <input type="text" class="form-control" />
+            <input type="text" className="form-control" />
             <br />
-            <button onClick={this.handleClick} class="btn btn-primary">
+            <button onClick={this.handleClick} className="btn btn-primary">
               Update need
             </button>
           </div>
@@ -449,9 +452,9 @@ class Hospital extends Component {
   displayHospitalsResourcdes = () => {
     return this.state.hospital.haves.map(have => {
       return (
-        <div class="form-group">
+        <div className="form-group">
           {have.resource.name}: {have.quatity}{have.resource.measurmentUnits}
-          <input type="text" class="form-control" />
+          <input type="text" className="form-control" />
 
         </div>
       );
@@ -470,14 +473,14 @@ class Hospital extends Component {
       );
     } else {
       return (
-        <div>
+        <div className="hospitalPage">
           {//Check if message failed
           this.state.hospital === null ? (
             <div> Loading </div>
           ) : (
             <div>
-              <div class="jumbotron">
-                <div class="container hosital-details">
+              <div className="jumbotron">
+                <div className="container hosital-details">
                   <h3>Hospital name:{this.state.hospital.hospital.name}</h3>
                   <h5>
                     {" "}
@@ -485,18 +488,18 @@ class Hospital extends Component {
                   </h5>
                 </div>
               </div>
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-4">
+              <div className="container">
+                <div className="row">
+                  <div className="col-md-4">
                     <h2>
-                      Number of beds occupied:{" "}
+                      Number of free beds:{" "}
                       {this.state.hospital.hospital.totalBeds -
                         this.state.hospital.hospital.reservedBeds -
                         this.state.hospital.hospital.occupiedBeds}{" "}
                     </h2>
                     <p>
                       <button
-                        class="btn btn-secondary"
+                        className="btn btn-secondary"
                         onClick={() => {
                           this.addBed(this.state.hospital, this.getHospital);
                         }}
@@ -504,7 +507,7 @@ class Hospital extends Component {
                         Add beds
                       </button>
                       <button
-                        class="btn btn-secondary"
+                        className="btn btn-secondary"
                         onClick={() => {
                           this.removeBed(this.state.hospital, this.getHospital);
                         }}
@@ -513,13 +516,13 @@ class Hospital extends Component {
                       </button>
                     </p>
                   </div>
-                  <div class="col-md-4">
+                  <div className="col-md-4">
                     <h2>
                       Number of reserved beds:{" "}
                       {this.state.hospital.hospital.reservedBeds}{" "}
                     </h2>
                   </div>
-                  <div class="col-md-4">
+                  <div className="col-md-4">
                     <h2>
                       Total number of beds:{" "}
                       {this.state.hospital.hospital.occupiedBeds}
@@ -530,13 +533,13 @@ class Hospital extends Component {
                 <hr />
               </div>
 
-              <div class="container hospitals-needs-resources ">
-                <div class="row">
-                  <div class="col-md-4 need-elem">
+              <div className="container hospitals-needs-resources ">
+                <div className="row">
+                  <div className="col-md-4 need-elem">
                     <h1>Needs</h1>
                     {this.displayHospitalsNeeds()}
                   </div>
-                  <div class="col-md-4 res-elem">
+                  <div className="col-md-4 res-elem">
                     <h1>Resources</h1>
                     {this.displayHospitalsResourcdes()}
                   </div>
