@@ -26,3 +26,45 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.personMap{
+  margin: 10px;
+  padding: 20px;
+  padding-top: 60px;
+  
+}
+
+.hospitalPage{
+  padding-top: 60px;
+}
+
+.form-group{
+  min-width: 200px;
+  max-width: 300px;
+  margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+.btn-secondary{
+  margin:5px;
+}
+.hosital-details{
+  margin: auto;
+  width: 30%;
+  padding: 10px;
+}
+.hospitals-needs-resources{
+  margin: auto;
+  width: 40%;
+  padding: 10px;
+}
+.need-elem{
+  padding-right: 200px;
+}
+ 
+.res-elem{
+  padding-left: 200px;
+}
+.form-control{
+  min-width: 200px;
+}

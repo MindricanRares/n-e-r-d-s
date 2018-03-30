@@ -7,6 +7,7 @@ const {
 } = require("react-google-maps");
 const { MarkerWithLabel } = require("react-google-maps/lib/components/addons/MarkerWithLabel");
 
+
 const MapWithAMarkerWithLabel = compose(
   withGoogleMap,
 )(props =>{
@@ -16,6 +17,14 @@ const MapWithAMarkerWithLabel = compose(
     center={{ lat: parseFloat(props.position.split(',')[0]), lng:parseFloat(props.position.split(',')[1]) }}
   >
 
+   <MarkerWithLabel
+      position={{  lat: parseFloat(props.position.split(',')[0]), lng:parseFloat(props.position.split(',')[1])}}
+      labelAnchor={new window.google.maps.Point(0, 0)}
+      labelStyle={{backgroundColor: "orange", fontSize: "8px", padding: "4px"}}
+    >
+      <div>You are here</div>
+
+    </MarkerWithLabel>
     <MarkerWithLabel
       position={{ lat: 45.6485988, lng: 25.6200351 }}
       labelAnchor={new window.google.maps.Point(0, 0)}

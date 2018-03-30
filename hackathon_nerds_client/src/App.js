@@ -9,20 +9,45 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/hospitals">Hospitals</Link>
-          </li>
-          <li>
-            <Link to="/person">Person</Link>
-          </li>
+        <div>
+          <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a className="navbar-brand" href="/">
+              N.E.R.D.S
+            </a>
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarsExampleDefault"
+              aria-controls="navbarsExampleDefault"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon" />
+            </button>
+
+            <div
+              className="collapse navbar-collapse"
+              id="navbarsExampleDefault"
+            >
+              <ul className="navbar-nav mr-auto">
+                <li className="nav-item">
+                  <Link to="/hospitals" className="nav-link">
+                    Hospitals
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/person" className="nav-link">
+                    Person
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </nav>
           <Route exact path="/" component={Home} />
           <Route path="/hospitals" component={Hospitals} />
           <Route path="/person" component={Person} />
-        </ul>
+        </div>
       </Router>
     );
   }
@@ -30,7 +55,76 @@ class App extends Component {
 
 class Home extends Component {
   render() {
-    return <div />;
+    return (
+      <div>
+        <main role="main">
+          <div className="jumbotron">
+            <div className="container">
+              <h1>National Emergency Room Distributed Solution</h1>
+              <p>
+                A simple solution that can help thousand of people across the
+                globe. Inspired by UBER and the way it got rid of the middle
+                man. N.E.R.D.S will manage the hospitals and people around them
+                in the best way possible while maintaining the smallest numbers
+                of casualties
+              </p>
+              <p>
+                <a className="btn btn-primary btn-lg" href="#" role="button">
+                  Register yout hospital
+                </a>
+              </p>
+            </div>
+          </div>
+
+          <div className="container">
+            <div className="row">
+              <div className="col-md-4">
+                <h2>Completely free</h2>
+                <p>
+                  The whole will be open source and everybody can contribuite
+                </p>
+                <br />
+                <br />
+                <p>
+                  <a className="btn btn-secondary" href="#" role="button">
+                    Find us on GitHub
+                  </a>
+                </p>
+              </div>
+              <div className="col-md-4">
+                <h2>Multicultural</h2>
+                <p>
+                  We need help to translate the website to as many languages as
+                  possible{" "}
+                </p>
+                <br />
+                <br />
+                <p>
+                  <a className="btn btn-secondary" href="#" role="button">
+                    Contact Us
+                  </a>
+                </p>
+              </div>
+              <div className="col-md-4">
+                <h2>Advocates of the future</h2>
+                <p>
+                  Becouse our solution is targeted at low income countries we
+                  belive that internet acces should be present everywhere in the
+                  world, thus we want to encourege everyone to help us achive
+                  this
+                </p>
+                <p>
+                  <a className="btn btn-secondary" href="#" role="button">
+                    Donate
+                  </a>
+                </p>
+              </div>
+            </div>
+            <ht />
+          </div>
+        </main>
+      </div>
+    );
   }
 }
 
@@ -59,7 +153,11 @@ class Hospitals extends Component {
   displayListOfHospitals = () => {
     return this.state.items.map(hospital => {
       let hospitalLink = "/hospitals/" + hospital.id;
-      return <Link to={hospitalLink}>{hospital.name}</Link>;
+      return (
+        <Link className="list-group-item" to={hospitalLink}>
+          {hospital.name}
+        </Link>
+      );
     });
   };
   createRoutesForHospitals = () => {
@@ -72,7 +170,7 @@ class Hospitals extends Component {
   render() {
     return (
       <Router>
-        <ul>
+        <ul className="hospitalPage list-group">
           {this.displayListOfHospitals()}
           {this.createRoutesForHospitals()}
         </ul>
@@ -85,11 +183,12 @@ class Person extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hospitals:"",
+      hospitals: "",
       gps_coordonates: "45.653,25.6130",
       numberOfPersons: 1,
       userSubmited: false,
-      best_hospital_location: "45.6485988,25.6200351"
+      best_hospital_location: "45.6485988,25.6200351",
+      best_hospital_id: 1
     };
     this.userFound = false;
   }
@@ -136,7 +235,7 @@ class Person extends Component {
     )
       .then(result => result.json())
       .then(hospitals => {
-        this.setState({ hospitals:hospitals });
+        this.setState({ hospitals: hospitals });
         // console.log(hospitals);
       });
   };
@@ -179,39 +278,58 @@ class Person extends Component {
     this.sendPersonToBestHospital();
   };
 
-  compareHospitalsResults=(a,b)=>{
+  compareHospitalsResults = (a, b) => {
     debugger;
-    if(a.distance>b.distance){
+    if (a.distance > b.distance) {
       return 1;
-    }else if(a.distance<b.distance){
+    } else if (a.distance < b.distance) {
       return 0;
     }
     return -1;
-  }
+  };
 
-  chooseBestHospital = () =>{
-    let coord=this.state.gps_coordonates;
+  chooseBestHospital = () => {
+    let coord = this.state.gps_coordonates;
     debugger;
-    let result =[];
+    let result = [];
     this.state.hospitals.forEach(hospital => {
-      let a=(coord.split(',')[0]-coord.split(',')[1])*(coord.split(',')[0]-coord.split(',')[1]);
-      let b=((hospital.hospital.coord.split(',')[0]-hospital.hospital.coord.split(',')[1])*(hospital.hospital.coord.split(',')[0]-hospital.hospital.coord.split(',')[1]));
-      let distanceToPerson=Math.sqrt(Math.abs(a-b));
-      let x=(((hospital.hospital.occupiedBeds+hospital.hospital.reservedBeds)*100)/hospital.hospital.totalBeds)*distanceToPerson*15
-      result.push({distance:x,hospitalId:hospital.hospital.id});
+      let a =
+        (coord.split(",")[0] - coord.split(",")[1]) *
+        (coord.split(",")[0] - coord.split(",")[1]);
+      let b =
+        (hospital.hospital.coord.split(",")[0] -
+          hospital.hospital.coord.split(",")[1]) *
+        (hospital.hospital.coord.split(",")[0] -
+          hospital.hospital.coord.split(",")[1]);
+      let distanceToPerson = Math.sqrt(Math.abs(a - b));
+      let x =
+        (hospital.hospital.occupiedBeds + hospital.hospital.reservedBeds) *
+        100 /
+        hospital.hospital.totalBeds *
+        distanceToPerson *
+        15;
+      result.push({
+        distance: x,
+        hospitalId: hospital.hospital.id,
+        hospital_location: hospital.hospital.coord
+      });
     });
-    let sortedResult=result.sort(this.compareHospitalsResults)
+    let sortedResult = result.sort(this.compareHospitalsResults);
+    debugger;
     console.log(sortedResult[0].hospitalId);
-  }
+    this.setState({
+      best_hospital_location: sortedResult[0].hospital_location,
+      best_hospital_id: sortedResult[0].hospitalId
+    });
+  };
 
   sendPersonToBestHospital = () => {
-
-    let bestHospital=this.chooseBestHospital();
+    let bestHospital = this.chooseBestHospital();
     // console.log(bestHospital);
 
-
-    let hospitalUrl =
-    `http://localhost:9000/hackathonNerdsServices/hospitals/hospital/2/reserve/${this.state.numberOfPersons}/?name=anonym`;
+    let hospitalUrl = `http://localhost:9000/hackathonNerdsServices/hospitals/hospital/${
+      this.state.best_hospital_id
+    }/reserve/${this.state.numberOfPersons}/?name=anonym`;
 
     fetch(hospitalUrl);
   };
@@ -219,13 +337,24 @@ class Person extends Component {
   render() {
     return (
       <div>
-        {this.drawMap()}
-        <input type="text" onChange={this.handleChange} />
-        <input
-          type="button"
-          value="Alert the text input"
-          onClick={this.handleClick}
-        />
+        <div className="personMap">{this.drawMap()}</div>
+
+        <div class="form-group">
+          <label for="exampleInputEmail1">Number of persons</label>
+          <input
+            type="text"
+            onChange={this.handleChange}
+            class="form-control"
+            placeholder="1"
+          />
+          <small class="form-text text-muted">
+            We need to know the number of beds required.
+          </small>
+          <br />
+          <button onClick={this.handleClick} class="btn btn-primary">
+            Send me tot the best Hospital
+          </button>
+        </div>
       </div>
     );
   }
@@ -256,26 +385,26 @@ class Hospital extends Component {
 
   addBed = (newHospital, callback) => {
     let hospitalUrl =
-    "http://localhost:9000/hackathonNerdsServices/hospitals/hospital/updateHsp/"+ this.props.match.url.split("/")[2]+"?totalBeds="+parseInt(parseInt(newHospital.hospital.totalBeds)+1) ;
+      "http://localhost:9000/hackathonNerdsServices/hospitals/hospital/updateHsp/" +
+      this.props.match.url.split("/")[2] +
+      "?totalBeds=" +
+      parseInt(parseInt(newHospital.hospital.totalBeds) + 1);
 
-    fetch(hospitalUrl).then(
-      ()=>{
-        this.getHospital();
-      }
-    );
-
+    fetch(hospitalUrl).then(() => {
+      this.getHospital();
+    });
   };
 
   removeBed = (newHospital, callback) => {
     let hospitalUrl =
-    "http://localhost:9000/hackathonNerdsServices/hospitals/hospital/updateHsp/"+ this.props.match.url.split("/")[2]+"?totalBeds="+parseInt(parseInt(newHospital.hospital.totalBeds)-1) ;
+      "http://localhost:9000/hackathonNerdsServices/hospitals/hospital/updateHsp/" +
+      this.props.match.url.split("/")[2] +
+      "?totalBeds=" +
+      parseInt(parseInt(newHospital.hospital.totalBeds) - 1);
 
-    fetch(hospitalUrl).then(
-      ()=>{
-        this.getHospital();
-      }
-    );
-
+    fetch(hospitalUrl).then(() => {
+      this.getHospital();
+    });
   };
 
   // handleChange = e => {
@@ -300,29 +429,33 @@ class Hospital extends Component {
     } else {
       needs = this.state.hospital.needs.map(need => {
         return (
-          <li key={need.id}>
-            {need.resource.name}:{need.quatity} {need.resource.measurmentUnits}
-            <br/>
-            <input type="text" onChange={this.handleChange} />
-            <input
-              type="button"
-              value="Change"
-              onClick={this.handleClick}
-            />
-          </li>
+          <div class="form-group">
+            <p>
+              {need.resource.name}: {need.quatity} 
+              {need.resource.measurmentUnits}
+            </p>
+
+            <input type="text" class="form-control" />
+            <br />
+            <button onClick={this.handleClick} class="btn btn-primary">
+              Update need
+            </button>
+          </div>
         );
       });
     }
     return needs;
   };
   displayHospitalsResourcdes = () => {
-      return this.state.hospital.haves.map( have=> {
-        return (
-          <li key={have.id}>
-            {have.resource.name}:{have.quatity} {have.resource.measurmentUnits}
-          </li>
-        );
-      });
+    return this.state.hospital.haves.map(have => {
+      return (
+        <div class="form-group">
+          {have.resource.name}: {have.quatity}{have.resource.measurmentUnits}
+          <input type="text" class="form-control" />
+
+        </div>
+      );
+    });
   };
 
   render() {
@@ -343,30 +476,76 @@ class Hospital extends Component {
             <div> Loading </div>
           ) : (
             <div>
-              {" "}
-              This will be just a hospital with name{" "}
-              {this.state.hospital.hospital.name}{" "}
+              <div class="jumbotron">
+                <div class="container hosital-details">
+                  <h3>Hospital name:{this.state.hospital.hospital.name}</h3>
+                  <h5>
+                    {" "}
+                    Hospital address:{this.state.hospital.hospital.address}
+                  </h5>
+                </div>
+              </div>
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-4">
+                    <h2>
+                      Number of beds occupied:{" "}
+                      {this.state.hospital.hospital.totalBeds -
+                        this.state.hospital.hospital.reservedBeds -
+                        this.state.hospital.hospital.occupiedBeds}{" "}
+                    </h2>
+                    <p>
+                      <button
+                        class="btn btn-secondary"
+                        onClick={() => {
+                          this.addBed(this.state.hospital, this.getHospital);
+                        }}
+                      >
+                        Add beds
+                      </button>
+                      <button
+                        class="btn btn-secondary"
+                        onClick={() => {
+                          this.removeBed(this.state.hospital, this.getHospital);
+                        }}
+                      >
+                        Remove beds
+                      </button>
+                    </p>
+                  </div>
+                  <div class="col-md-4">
+                    <h2>
+                      Number of reserved beds:{" "}
+                      {this.state.hospital.hospital.reservedBeds}{" "}
+                    </h2>
+                  </div>
+                  <div class="col-md-4">
+                    <h2>
+                      Total number of beds:{" "}
+                      {this.state.hospital.hospital.occupiedBeds}
+                    </h2>
+                  </div>
+                </div>
+
+                <hr />
+              </div>
+
+              <div class="container hospitals-needs-resources ">
+                <div class="row">
+                  <div class="col-md-4 need-elem">
+                    <h1>Needs</h1>
+                    {this.displayHospitalsNeeds()}
+                  </div>
+                  <div class="col-md-4 res-elem">
+                    <h1>Resources</h1>
+                    {this.displayHospitalsResourcdes()}
+                  </div>
+                </div>
+
+                <hr />
+              </div>
             </div>
           )}
-          <p>You have only: {this.state.hospital.hospital.totalBeds} left</p>
-          <button
-            onClick={() => {
-              this.addBed(this.state.hospital, this.getHospital);
-            }}
-          >
-            Add beds
-          </button>
-          <button
-            onClick={() => {
-              this.removeBed(this.state.hospital, this.getHospital);
-            }}
-          >
-            Remove beds
-          </button>
-          <h1>Needs</h1>
-          <ul>{this.displayHospitalsNeeds()}</ul>
-          <h1>Resources</h1>
-          <ul>{this.displayHospitalsResourcdes()}</ul>
         </div>
       );
     }
