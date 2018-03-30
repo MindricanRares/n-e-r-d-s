@@ -44,16 +44,16 @@ class Hospitals extends Component {
   }
 
   getHostpitals = () => {
-    fetch(`http://localhost:3000/hospitals`)
+    fetch(`http://localhost:9000/hackathonNerdsServices/hospitals/hospitalList`)
       .then(result => result.json())
       .then(items => {
         this.setState({ items });
-        console.log(items);
+        // console.log(items);
       });
   };
 
   chooseHospitalBtn = hospital => {
-    console.log(hospital.id);
+    // console.log(hospital.id);
   };
 
   displayListOfHospitals = () => {
@@ -84,7 +84,13 @@ class Hospitals extends Component {
 class Person extends Component {
   constructor(props) {
     super(props);
-    this.state = { gps_coordonates: "45.653,25.6130", numberOfPersons: 1,userSubmited:false,best_hospital_location:"45.6485988,25.6200351" };
+    this.state = {
+      hospitals:"",
+      gps_coordonates: "45.653,25.6130",
+      numberOfPersons: 1,
+      userSubmited: false,
+      best_hospital_location: "45.6485988,25.6200351"
+    };
     this.userFound = false;
   }
 
@@ -125,11 +131,13 @@ class Person extends Component {
     this.getHostpitals();
   }
   getHostpitals = () => {
-    fetch(`http://localhost:3000/hospitals`)
+    fetch(
+      `http://localhost:9000/hackathonNerdsServices/person/hospital/resources`
+    )
       .then(result => result.json())
-      .then(items => {
-        this.setState({ items });
-        console.log(items);
+      .then(hospitals => {
+        this.setState({ hospitals:hospitals });
+        // console.log(hospitals);
       });
   };
 
@@ -164,14 +172,49 @@ class Person extends Component {
   };
 
   handleClick = () => {
-    console.log(this.state.numberOfPersons);
+    // console.log(this.state.numberOfPersons);
     this.setState({
-      userSubmited:true
-    })
-    // this.sendPersonToBestHospital();
+      userSubmited: true
+    });
+    this.sendPersonToBestHospital();
   };
 
-  sendPersonToBestHospital = () => {};
+  compareHospitalsResults=(a,b)=>{
+    debugger;
+    if(a.distance>b.distance){
+      return 1;
+    }else if(a.distance<b.distance){
+      return 0;
+    }
+    return -1;
+  }
+
+  chooseBestHospital = () =>{
+    let coord=this.state.gps_coordonates;
+    debugger;
+    let result =[];
+    this.state.hospitals.forEach(hospital => {
+      let a=(coord.split(',')[0]-coord.split(',')[1])*(coord.split(',')[0]-coord.split(',')[1]);
+      let b=((hospital.hospital.coord.split(',')[0]-hospital.hospital.coord.split(',')[1])*(hospital.hospital.coord.split(',')[0]-hospital.hospital.coord.split(',')[1]));
+      let distanceToPerson=Math.sqrt(Math.abs(a-b));
+      let x=(((hospital.hospital.occupiedBeds+hospital.hospital.reservedBeds)*100)/hospital.hospital.totalBeds)*distanceToPerson*15
+      result.push({distance:x,hospitalId:hospital.hospital.id});
+    });
+    let sortedResult=result.sort(this.compareHospitalsResults)
+    console.log(sortedResult[0].hospitalId);
+  }
+
+  sendPersonToBestHospital = () => {
+
+    let bestHospital=this.chooseBestHospital();
+    // console.log(bestHospital);
+
+
+    let hospitalUrl =
+    `http://localhost:9000/hackathonNerdsServices/hospitals/hospital/2/reserve/${this.state.numberOfPersons}/?name=anonym`;
+
+    fetch(hospitalUrl);
+  };
 
   render() {
     return (
@@ -191,7 +234,7 @@ class Person extends Component {
 class Hospital extends Component {
   constructor(props) {
     super();
-    this.state = { hospital: {} };
+    this.state = { hospital: {}, need: [] };
   }
 
   componentDidMount() {
@@ -200,94 +243,133 @@ class Hospital extends Component {
 
   getHospital = () => {
     let hospitalUrl =
-      "http://localhost:3000/hospitals/" + this.props.match.url.split("/")[2];
+      "http://localhost:9000/hackathonNerdsServices/hospitals/hospital/" +
+      this.props.match.url.split("/")[2] +
+      "/resources";
+
     fetch(hospitalUrl)
       .then(result => result.json())
       .then(hospital => {
-        this.setState({ hospital });
+        this.setState({ hospital: hospital });
       });
   };
 
   addBed = (newHospital, callback) => {
-    debugger;
-    var request = require("request");
-    let urlLink =
-      "http://localhost:3000/hospitals/" + this.props.match.url.split("/")[2];
-    newHospital.nr_beds = newHospital.nr_beds + 1;
-    var options = {
-      method: "PUT",
-      url: urlLink,
-      headers: {
-        "Postman-Token": "bba376ad-508e-4344-a8f5-75aede3f4fc9",
-        "Cache-Control": "no-cache",
-        "Content-Type": "application/json"
-      },
-      body: {
-        name: newHospital.name,
-        address: newHospital.address,
-        gps_coordonates: newHospital.gps_coordonates,
-        nr_beds: newHospital.nr_beds,
-        nr_of_pending_beds: newHospital.nr_of_pending_beds
-      },
-      json: true
-    };
+    let hospitalUrl =
+    "http://localhost:9000/hackathonNerdsServices/hospitals/hospital/updateHsp/"+ this.props.match.url.split("/")[2]+"?totalBeds="+parseInt(parseInt(newHospital.hospital.totalBeds)+1) ;
 
-    request(options, function(error, response, body) {
-      if (error) throw new Error(error);
-      return callback();
-    });
+    fetch(hospitalUrl).then(
+      ()=>{
+        this.getHospital();
+      }
+    );
+
   };
-  removeBed = (newHospital, callback) => {
-    debugger;
-    var request = require("request");
-    let urlLink =
-      "http://localhost:3000/hospitals/" + this.props.match.url.split("/")[2];
-    newHospital.nr_beds = newHospital.nr_beds - 1;
-    var options = {
-      method: "PUT",
-      url: urlLink,
-      headers: {
-        "Postman-Token": "bba376ad-508e-4344-a8f5-75aede3f4fc9",
-        "Cache-Control": "no-cache",
-        "Content-Type": "application/json"
-      },
-      body: {
-        name: newHospital.name,
-        address: newHospital.address,
-        gps_coordonates: newHospital.gps_coordonates,
-        nr_beds: newHospital.nr_beds,
-        nr_of_pending_beds: newHospital.nr_of_pending_beds
-      },
-      json: true
-    };
 
-    request(options, function(error, response, body) {
-      if (error) throw new Error(error);
-      return callback();
-    });
+  removeBed = (newHospital, callback) => {
+    let hospitalUrl =
+    "http://localhost:9000/hackathonNerdsServices/hospitals/hospital/updateHsp/"+ this.props.match.url.split("/")[2]+"?totalBeds="+parseInt(parseInt(newHospital.hospital.totalBeds)-1) ;
+
+    fetch(hospitalUrl).then(
+      ()=>{
+        this.getHospital();
+      }
+    );
+
+  };
+
+  // handleChange = e => {
+  //   this.setState({ numberOfPersons: e.target.value });
+  // };
+
+  // handleClick = () => {
+  //   console.log(this.state.numberOfPersons);
+  //   this.setState({
+  //     : true
+  //   });
+  //   // this.sendPersonToBestHospital();
+  // };
+
+  displayHospitalsNeeds = () => {
+    let needs = "";
+    if (
+      Object.keys(this.state.hospital).length === 0 &&
+      this.state.hospital.constructor === Object
+    ) {
+      needs = <li>Still loading</li>;
+    } else {
+      needs = this.state.hospital.needs.map(need => {
+        return (
+          <li key={need.id}>
+            {need.resource.name}:{need.quatity} {need.resource.measurmentUnits}
+            <br/>
+            <input type="text" onChange={this.handleChange} />
+            <input
+              type="button"
+              value="Change"
+              onClick={this.handleClick}
+            />
+          </li>
+        );
+      });
+    }
+    return needs;
+  };
+  displayHospitalsResourcdes = () => {
+      return this.state.hospital.haves.map( have=> {
+        return (
+          <li key={have.id}>
+            {have.resource.name}:{have.quatity} {have.resource.measurmentUnits}
+          </li>
+        );
+      });
   };
 
   render() {
-    return (
-      <div>
-        This will be just a hospital with name {this.state.hospital.name}
-        <p>You have only: {this.state.hospital.nr_beds} left</p>
-        <button
-          onClick={() => {
-            this.addBed(this.state.hospital, this.getHospital);
-          }}
-        >
-          Add beds
-        </button>
-        <button
-          onClick={() => {
-            this.removeBed(this.state.hospital, this.getHospital);
-          }}
-        >
-          Remove beds
-        </button>
-      </div>
-    );
+    if (
+      Object.keys(this.state.hospital).length === 0 &&
+      this.state.hospital.constructor === Object
+    ) {
+      return (
+        <div>
+          <p>Loading</p>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          {//Check if message failed
+          this.state.hospital === null ? (
+            <div> Loading </div>
+          ) : (
+            <div>
+              {" "}
+              This will be just a hospital with name{" "}
+              {this.state.hospital.hospital.name}{" "}
+            </div>
+          )}
+          <p>You have only: {this.state.hospital.hospital.totalBeds} left</p>
+          <button
+            onClick={() => {
+              this.addBed(this.state.hospital, this.getHospital);
+            }}
+          >
+            Add beds
+          </button>
+          <button
+            onClick={() => {
+              this.removeBed(this.state.hospital, this.getHospital);
+            }}
+          >
+            Remove beds
+          </button>
+          <h1>Needs</h1>
+          <ul>{this.displayHospitalsNeeds()}</ul>
+          <h1>Resources</h1>
+          <ul>{this.displayHospitalsResourcdes()}</ul>
+        </div>
+      );
+    }
   }
 }
 
